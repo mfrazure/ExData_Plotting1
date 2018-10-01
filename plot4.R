@@ -1,0 +1,18 @@
+power <- read_delim(".\\data\\household_power_consumption.txt", col_names = TRUE, delim = ";", col_types = "ccnnnnnnn")
+datepower<- power %>% mutate(datestr = paste(Date,Time))
+datepower$datestr<- strptime(datepower$datestr,"%d/%m/%Y %H:%M:%S")
+subpower <- datepower[datepower$datestr >= "2007-02-01" & datepower$datestr < "2007-02-03", ]
+subpower<- subpower[1:2880,]
+par(mfrow = c(2,2), mar = c(4,4,2,2), oma = c(0,0,2,0))
+with(subpower, {
+	plot(datestr, Global_active_power,ylab = "Global Active Power", type = "l")
+	plot(datestr, Voltage, xlab = "datetime", type = "l")
+	plot(datestr, Sub_metering_1, ylab = "Energy sub metering", xlab = "", main = "",type = "n")
+	points(datestr,Sub_metering_1, col = 1, type = "l")
+	points(datestr,Sub_metering_2, col = "red", type = "l")
+	points(datestr,Sub_metering_3, col = "purple", type = "l")
+	legend("topright", c("Sub_metering_1","Sub_metering_2","Sub_metering_3"), col = c(1,"red","purple"), pch = c("-","-","-"))
+	plot(datestr, Global_reactive_power, type = "l", xlab = "datetime")
+	})
+dev.copy(png,"plot3.png",width=480, height = 480, units = "px")
+dev.off()
