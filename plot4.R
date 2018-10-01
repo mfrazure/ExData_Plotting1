@@ -1,3 +1,6 @@
+library(readr)
+library(tidyr)
+library(dplyr)
 power <- read_delim(".\\data\\household_power_consumption.txt", col_names = TRUE, delim = ";", col_types = "ccnnnnnnn")
 datepower<- power %>% mutate(datestr = paste(Date,Time))
 datepower$datestr<- strptime(datepower$datestr,"%d/%m/%Y %H:%M:%S")
